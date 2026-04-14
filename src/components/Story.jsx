@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import portraitImage from '../assets/1.jpg'
+import Image from '../assets/1.jpg'
 
 const Story = () => {
   const sectionRef = useRef(null)
@@ -106,7 +106,7 @@ const Story = () => {
 
           <div className="premium-frame" ref={imageRef} style={{ opacity: 0 }}>
             <img 
-              src={portraitImage} 
+              src={Image} 
               alt="Babe portrait" 
               className="w-full h-full object-cover aspect-[4/5]"
             />
