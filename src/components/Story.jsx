@@ -1,13 +1,34 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import portraitImage from '../assets/portrait.jpg'
+
+// ============================================
+// FIXED IMAGE IMPORT - Multiple fallback options
+// ============================================
+
+// Option 1: Try direct import (uncomment if you have portrait.jpg in assets)
+// import portraitImage from '../assets/portrait.jpg'
+
+// Option 2: Use public folder (MOST RELIABLE for Vercel)
+// Place your image in public/images/portrait.jpg
+const portraitImage = '/images/portrait.jpg'
+
+// Option 3: If image is in assets with different name, uncomment and use:
+// const portraitImage = '/src/assets/portrait.jpg'
+
+// Option 4: Direct URL (if nothing works)
+// const portraitImage = 'https://placehold.co/800x1000/fdfaf7/c9a87b?text=Babe+Portrait'
+
+// Add error handling state
+const [imgError, setImgError] = useState(false)
+// ============================================
 
 const Story = () => {
   const sectionRef = useRef(null)
   const textRef = useRef(null)
   const imageRef = useRef(null)
   const timelineRef = useRef([])
+  const [imageLoaded, setImageLoaded] = useState(false)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -21,19 +42,21 @@ const Story = () => {
       })
 
       // Text reveal line by line
-      const paragraphs = textRef.current.querySelectorAll('p')
-      paragraphs.forEach((p, i) => {
-        ScrollTrigger.create({
-          trigger: p,
-          start: "top 85%",
-          onEnter: () => {
-            gsap.fromTo(p,
-              { opacity: 0, y: 30, filter: "blur(5px)" },
-              { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.8, delay: i * 0.15, ease: "power2.out" }
-            )
-          }
+      const paragraphs = textRef.current?.querySelectorAll('p')
+      if (paragraphs) {
+        paragraphs.forEach((p, i) => {
+          ScrollTrigger.create({
+            trigger: p,
+            start: "top 85%",
+            onEnter: () => {
+              gsap.fromTo(p,
+                { opacity: 0, y: 30, filter: "blur(5px)" },
+                { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.8, delay: i * 0.15, ease: "power2.out" }
+              )
+            }
+          })
         })
-      })
+      }
 
       // Image frame reveal
       ScrollTrigger.create({
@@ -104,12 +127,32 @@ const Story = () => {
             </div>
           </div>
 
+          {/* FIXED IMAGE SECTION - With fallback */}
           <div className="premium-frame" ref={imageRef} style={{ opacity: 0 }}>
-            <img 
-              src={portraitImage} 
-              alt="Babe portrait" 
-              className="w-full h-full object-cover aspect-[4/5]"
-            />
+            {portraitImage ? (
+              <img 
+                src={portraitImage}
+                alt="Babe portrait"
+                className="w-full h-full object-cover aspect-[4/5]"
+                onLoad={() => setImageLoaded(true)}
+                onError={(e) => {
+                  console.error('Image failed to load:', portraitImage)
+                  e.target.style.display = 'none'
+                  e.target.nextSibling.style.display = 'flex'
+                }}
+              />
+            ) : null}
+            
+            {/* Fallback div if image fails to load */}
+            <div 
+              className="w-full h-full object-cover aspect-[4/5] flex flex-col items-center justify-center bg-[#f5f0eb]"
+              style={{ display: imageLoaded ? 'none' : 'flex' }}
+            >
+              <span className="text-6xl mb-4">🌸</span>
+              <span className="text-[#c9a87b] text-sm tracking-wider">Babe's Portrait</span>
+              <span className="text-[#999] text-xs mt-2">Place image in: public/images/portrait.jpg</span>
+            </div>
+            
             <div className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 text-xs text-[#c9a87b] tracking-wider">
               ✦ MY BABE ✦
             </div>
