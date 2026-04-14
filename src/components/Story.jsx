@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import portraitImage from '../assets/image1.jpg'
+import portraitImage from '../assets/1.jpg'
 
 const Story = () => {
   const sectionRef = useRef(null)
