@@ -2,22 +2,12 @@ import React, { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-// ============================================
-// FIXED IMAGE IMPORT - Multiple fallback options
-// ============================================
 
-// Option 1: Try direct import (uncomment if you have portrait.jpg in assets)
-// import portraitImage from '../assets/portrait.jpg'
 
-// Option 2: Use public folder (MOST RELIABLE for Vercel)
-// Place your image in public/images/portrait.jpg
-const portraitImage = '/images/portrait.jpg'
 
-// Option 3: If image is in assets with different name, uncomment and use:
-// const portraitImage = '/src/assets/portrait.jpg'
+const portraitImage = '/src/assets/portrait.jpg'
 
-// Option 4: Direct URL (if nothing works)
-// const portraitImage = 'https://placehold.co/800x1000/fdfaf7/c9a87b?text=Babe+Portrait'
+
 
 // Add error handling state
 const [imgError, setImgError] = useState(false)
