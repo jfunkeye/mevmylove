@@ -3,7 +3,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 // Updated image URL from Google Drive (direct download link)
-const portraitImage = 'https://drive.google.com/uc?export=download&id=1AHllFhJqjfnky2awvp3lpTXmhy8rGeHH'
+const portraitImage = 'https://drive.google.com/uc?export=view&id=1AHllFhJqjfnky2awvp3lpTXmhy8rGeHH'
 
 const Story = () => {
   const sectionRef = useRef(null)
