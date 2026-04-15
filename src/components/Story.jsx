@@ -2,16 +2,10 @@ import React, { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-// Updated image URL from Google Drive (direct download link)
-const portraitImage = 'https://drive.google.com/uc?export=view&id=1AHllFhJqjfnky2awvp3lpTXmhy8rGeHH'
-
 const Story = () => {
   const sectionRef = useRef(null)
   const textRef = useRef(null)
-  const imageRef = useRef(null)
   const timelineRef = useRef([])
-  const [imageLoaded, setImageLoaded] = useState(false)
-  const [imgError, setImgError] = useState(false)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -40,18 +34,6 @@ const Story = () => {
           })
         })
       }
-
-      // Image frame reveal
-      ScrollTrigger.create({
-        trigger: imageRef.current,
-        start: "top 80%",
-        onEnter: () => {
-          gsap.fromTo(imageRef.current,
-            { scale: 0.85, opacity: 0, rotateZ: -2 },
-            { scale: 1, opacity: 1, rotateZ: 0, duration: 1.2, ease: "power3.out" }
-          )
-        }
-      })
 
       // Timeline items
       timelineRef.current.forEach((item, i) => {
@@ -88,7 +70,7 @@ const Story = () => {
           <p className="text-[#888] max-w-2xl mx-auto mt-4 font-light">A story that started with a single notification and became my entire world</p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-16 items-start">
+        <div className="max-w-3xl mx-auto">
           <div ref={textRef} className="space-y-6">
             <p className="text-[#444] text-lg leading-relaxed font-light">
               It started with a simple message on <span className="text-[#c9a87b] font-medium">Chatta</span>.
@@ -107,34 +89,6 @@ const Story = () => {
               <div className="divider-thin"></div>
               <p className="text-[#c9a87b] italic mt-4 text-lg">"Some souls just recognize each other instantly. You are mine."</p>
               <p className="text-[#999] text-sm mt-2">— Forever yours, always.</p>
-            </div>
-          </div>
-
-          {/* Image Section with Google Drive image */}
-          <div className="premium-frame" ref={imageRef} style={{ opacity: 0 }}>
-            {!imgError ? (
-              <img 
-                src={portraitImage}
-                alt="Babe portrait"
-                className="w-full h-full object-cover aspect-[4/5]"
-                onLoad={() => setImageLoaded(true)}
-                onError={() => setImgError(true)}
-              />
-            ) : null}
-            
-            {/* Fallback div if image fails to load */}
-            {imgError && (
-              <div 
-                className="w-full h-full object-cover aspect-[4/5] flex flex-col items-center justify-center bg-[#f5f0eb]"
-              >
-                <span className="text-6xl mb-4">🌸</span>
-                <span className="text-[#c9a87b] text-sm tracking-wider">Babe's Portrait</span>
-                <span className="text-[#999] text-xs mt-2">Image loading failed</span>
-              </div>
-            )}
-            
-            <div className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 text-xs text-[#c9a87b] tracking-wider">
-              ✦ MY BABE ✦
             </div>
           </div>
         </div>
