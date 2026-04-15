@@ -2,16 +2,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-
-
-
-const portraitImage = '/src/assets/portrait.jpg'
-
-
-
-// Add error handling state
-const [imgError, setImgError] = useState(false)
-// ============================================
+// Updated image URL from Google Drive (direct download link)
+const portraitImage = 'https://drive.google.com/uc?export=download&id=1AHllFhJqjfnky2awvp3lpTXmhy8rGeHH'
 
 const Story = () => {
   const sectionRef = useRef(null)
@@ -19,6 +11,7 @@ const Story = () => {
   const imageRef = useRef(null)
   const timelineRef = useRef([])
   const [imageLoaded, setImageLoaded] = useState(false)
+  const [imgError, setImgError] = useState(false)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -117,31 +110,28 @@ const Story = () => {
             </div>
           </div>
 
-          {/* FIXED IMAGE SECTION - With fallback */}
+          {/* Image Section with Google Drive image */}
           <div className="premium-frame" ref={imageRef} style={{ opacity: 0 }}>
-            {portraitImage ? (
+            {!imgError ? (
               <img 
                 src={portraitImage}
                 alt="Babe portrait"
                 className="w-full h-full object-cover aspect-[4/5]"
                 onLoad={() => setImageLoaded(true)}
-                onError={(e) => {
-                  console.error('Image failed to load:', portraitImage)
-                  e.target.style.display = 'none'
-                  e.target.nextSibling.style.display = 'flex'
-                }}
+                onError={() => setImgError(true)}
               />
             ) : null}
             
             {/* Fallback div if image fails to load */}
-            <div 
-              className="w-full h-full object-cover aspect-[4/5] flex flex-col items-center justify-center bg-[#f5f0eb]"
-              style={{ display: imageLoaded ? 'none' : 'flex' }}
-            >
-              <span className="text-6xl mb-4">🌸</span>
-              <span className="text-[#c9a87b] text-sm tracking-wider">Babe's Portrait</span>
-              <span className="text-[#999] text-xs mt-2">Place image in: public/images/portrait.jpg</span>
-            </div>
+            {imgError && (
+              <div 
+                className="w-full h-full object-cover aspect-[4/5] flex flex-col items-center justify-center bg-[#f5f0eb]"
+              >
+                <span className="text-6xl mb-4">🌸</span>
+                <span className="text-[#c9a87b] text-sm tracking-wider">Babe's Portrait</span>
+                <span className="text-[#999] text-xs mt-2">Image loading failed</span>
+              </div>
+            )}
             
             <div className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 text-xs text-[#c9a87b] tracking-wider">
               ✦ MY BABE ✦
